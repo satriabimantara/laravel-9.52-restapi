@@ -12,7 +12,7 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:sanctum');
+        $this->middleware('auth:sanctum');
     }
     /**
      * Display a listing of the resource.
@@ -21,9 +21,15 @@ class PostController extends Controller
      */
     public function index()
     {
+        // mengukur computation load dari query yang dilakukan
+        // DB::listen(function ($query) {
+        //     var_dump($query->sql);
+        // });
         //
         // $data = Post::all();
         // return response()->json($data, 200);
+
+        // tambahkan with() untuk proses eager load di Laravel untuk meringankan beban komputasi query di belakang layar
         $data = Post::with(['user',])->paginate(4);
         return new PostCollection($data);
     }
@@ -81,6 +87,8 @@ class PostController extends Controller
                 'message' => 'Resource not found!'
             ], 404);
         }
+
+        // akan mengembalikan data dengan field-field yang sudah kita sesuaikan di PostResource
         return response()->json(new PostResource($data), 200);
     }
 
