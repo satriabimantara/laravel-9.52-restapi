@@ -12,7 +12,7 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        // $this->middleware('auth:sanctum');
     }
     /**
      * Display a listing of the resource.
@@ -22,6 +22,8 @@ class PostController extends Controller
     public function index()
     {
         //
+        // $data = Post::all();
+        // return response()->json($data, 200);
         $data = Post::with(['user',])->paginate(4);
         return new PostCollection($data);
     }
